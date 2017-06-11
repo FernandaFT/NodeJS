@@ -99,15 +99,44 @@ function remove(filename){
  * @param  {String} filename3 file when the merge is saved
  * @return {EventEmitter}     event
  */
-function merge(filename, filename2){
+function merge(filename1, filename2, filename3){
 	let event = new EventEmitter();
 
-	fs.appendFile(filename, error => {
-		if (error) throw error;
+	// Check if the files does not exists
+	if(!fs.existsSync(filename1 && filename2)){
+		event.emit('error', new Error('Files does not exists: '+filename1 + '&' + filename2));
+		return event;
+	}
 
-		fs.writeFile()
-	})
+	// file already exists
+	if(fs.existsSync(filename3)){
+		// event.emit('error', new Error('File alreasy exists: '+filename3));
+		return event;
+	}
 
+	// read first file to get info
+	fs.readFile(filename1, {encoding: 'utf-8'}, (error, data1) => {
+  		if(error) event.emit('error', error);
+		event.emit('found it 1');
+		// read second file to get info
+		fs.readFile(filename2, {encoding: 'utf-8'}, (error, data2) => {
+  			if(error) event.emit('error', error);
+			event.emit('found it 2');
+			// write new file with data of the first
+			fs.writeFile(filename3, data1, error => {
+				if(error) event.emit('error', error);
+				event.emit('done', data1);
+				// Append to the new file data of the second file 
+				fs.appendFile(filename3, data2, (err) => {
+  					if(error) event.emit('error', error);
+					event.emit('add', data2);
+				});
+			});
+		});
+	});
+
+
+	return event;
 }
 
 
