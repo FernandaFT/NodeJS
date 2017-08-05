@@ -1,0 +1,17 @@
+{
+  "name": "class11",
+  "version": "1.0.0",
+  "description": "Class 11 Introduction to Express js",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "Andrey Alfaro <andreyalfaro@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "mongodb": "^2.2.30"
+  }
+}
