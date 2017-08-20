@@ -9,22 +9,22 @@ const VALIDATIONS = {
 		validation: 'date'
 	},
 	first_name: {
-		required: true,
+		required: false,
 		validation: 'string'
 	},
 	last_name: {
-		required: true,
+		required: false,
 		validation: 'string'
 	},
 	ID: {
-		require: true,
+		require: false,
 		validation: (value, key) => new Promise((resolve, reject) => {
 			console.log('custom validation for ID');
 			return resolve({value, key, valid: true});
 		})
 	},
 	deparment: {
-		required: true,
+		required: false,
 		validation: (value, key) => new Promise((resolve, reject) => {
 			if(!value || !ObjectID.isValid(value)) return resolve({value, key, valid: false});
 			var department = new Department({_id: value});
@@ -41,7 +41,7 @@ module.exports = Appointment;
 
 function Appointment(data){
 	var self = this;
-	
+
 	Object.assign(data, {
 		date: data.date ? moment(data.date).format() : moment().format(),
 		first_name: data.first_name || '',
@@ -49,7 +49,7 @@ function Appointment(data){
 		ID: data.ID || null,
 		deparment: data.deparment || '',
 	});
-	
+
 	Object.assign(self, new Model(data, VALIDATIONS, EXPORTABLES, 'appointments'));
-	
+
 }

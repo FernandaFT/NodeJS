@@ -31,11 +31,13 @@ function create(req, res){
 		last_name: req.body.last_name,
 		deparment: req.body.deparment,
 	};
+		console.log('params', params);
 	let appointment = new Appointment(params);
+	console.log('appointment', appointment);
 	appointment.valid().then(valid => {
 		console.log('appointment validation', valid);
 		if(!valid) return res.json(appointment.errors);
-		
+
 		// save the new appointment
 		appointment.save().then((data, err) => {
 			if(err) return res.json({error: err});
@@ -53,7 +55,7 @@ function create(req, res){
 function remove(req, res){
 	let id = req.params ? req.params.appointmentId : null;
 	if(!id) return res.json({error: `Invalid id ${id}`});
-	
+
 	let query = {_id: new ObjectID(id)};
 	db.appointments.findAndRemove(query, {w: 1}, (err, data) => {
 		if(err) return res.json({error: err});
